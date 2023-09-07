@@ -1,0 +1,72 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: simple-router
+  namespace: simple-router
+  annotations:
+    # sidecar.speedscale.com/inject: "true"
+#    link.argocd.argoproj.io/external-link: https://app.komodor.com/main/services/{{account-name}}.{{cluster}}-{{namespace}}.{{service}}
+    link.argocd.argoproj.io/external-link: https://app.komodor.com/services/demo.hpbx-mac-cluster-simple-router.simple-router?accountId=fe52cf0b-42da-4ae1-a8db-776e0f1335a0&
+#    app.komodor.com/service.link.jenkins: http://localhost:8001/version
+#    app.komodor.com/deploy.link.jenkins: http://localhost:8001/version
+    app.komodor.com/service.link.argocd: https://localhost:8090/applications/argocd/newsimple-router?operation=false&resource=
+    app.komodor.com/deploy.link.argocd: https://localhost:8090/applications/argocd/newsimple-router?operation=false&resource=
+
+    app.komodor.com/service.link.github: https://github.com/hughbrien/simple-router
+    app.komodor.com/deploy.link.github: https://github.com/hughbrien/simple-router
+    app.komodor.com/deploy.link.webhook: http://10.0.0.8:5000/webhook
+    app.komodor.com/deploy.link.github-latestchange: https://github.com/hughbrien/simple-router/commit/4b214ee8fbf7255a538ed3f9316d664ad5edfa4d
+    app.komodor.com/tracked_files: |
+      *.yaml
+    app.komodor.com/app: https://github.com/hughbrien/simple-router
+    app.komodor.com/app.ref: 4b214ee8fbf7255a538ed3f9316d664ad5edfa4d
+
+  labels:
+    tags.datadoghq.com/env: "development"
+    tags.datadoghq.com/service: "simple-router"
+    tags.datadoghq.com/version: "2.1.9"
+    cluster: hpbx-mac-cluster
+    branch: main
+    author: hughbrien
+    owner: hughbrien
+spec:
+  selector:
+    matchLabels:
+      app: simple-router
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: simple-router
+        branch: main
+        version: 2.1.9
+    spec:
+      containers:
+      - name: simple-router
+        image: docker.io/hughbrien/simple-router:2.1.9
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 5000
+        securityContext:
+          allowPrivilegeEscalation: false
+        livenessProbe:
+          httpGet:
+            path: /healthz/live
+            port: 5000
+          initialDelaySeconds: 30
+          timeoutSeconds: 15
+        readinessProbe:
+          httpGet:
+            path: /healthz/ready
+            port: 5000
+          initialDelaySeconds: 30
+          periodSeconds: 60
+        resources:
+          limits:
+            cpu: 500m
+            memory: 275Mi
+          requests:
+            cpu: 245m
+            # Reduce by 5 from 250 recommended
+            memory: 234Mi
+            # recude by 22 from 256 recommended
