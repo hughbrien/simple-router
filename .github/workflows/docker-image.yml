@@ -16,4 +16,4 @@ jobs:
     - uses: actions/checkout@v3
     - name: Build the Docker image
       #run: docker build . --file Dockerfile --tag simple-router:$(date +%s)
-      run: docker  build  --push -t  hugenet.jfrog.io/docker/hello-world:latest:1.0.0
+      run: docker  build . --push --tag hugenet.jfrog.io/docker/hello-world:latest:1.0.0
