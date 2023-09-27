@@ -23,4 +23,4 @@ jobs:
         JF_ACCESS_TOKEN: ${{ secrets.JF_ACCESS_TOKEN }}
         
     - name: Build the Docker image
-      run: docker  build . --push --tag hugenet.jfrog.io/docker/hello-world:latest:1.0.0
+      run: docker  build . --push --tag hugenet.jfrog.io/docker/hello-world:1.0.0
