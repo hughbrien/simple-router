@@ -2,7 +2,7 @@
 A simple-router application 
 
 - Ensure you are have access to an  appropriate docker runtime/envioronment such as ***Docker Desktop*** [https://www.docker.com/products/docker-desktop/](https://www.docker.com/products/docker-desktop/)
-- [Fork](https://github.com/hughbrien/frontend/fork)  this Repository 
+- [Fork](https://github.com/hughbrien/simple-router/fork)  this Repository 
 - You also need the following
 - Cluster Authentication
 - Read / Write Access to the  Repository
@@ -40,29 +40,29 @@ kubectl apply -f .manifest/simple-router-config-map.yaml
 ## Rollout 
 ```
 export VERSION=X.X.X
-kubectl set image deployment/frontend frontend=frontend:X.X.X -n frontend
-kubectl rollout restart deployment/frontend 
+kubectl set image deployment/simple-router simple-router=simple-router:X.X.X -n simple-router
+kubectl rollout restart deployment/simple-router 
 ```
 
 ## View Changes in Komodor 
-- [Frontend Service](https://app.komodor.com/services/demo.google-se-cluster-frontend.frontend)
+- [simple-router Service](https://app.komodor.com/services/demo.google-se-cluster-simple-router.simple-router)
 
 ## Need a link to the Services 
 
-```kuberctl get service -n frontend``` will return the PUBLIC IPADDRESS 
+```kuberctl get service -n simple-router``` will return the PUBLIC IPADDRESS 
 
-- [Frontend Actual](http://34.173.139.195:5000/)
+- [simple-router Actual](http://34.173.139.195:5000/)
 
 
 ## From the Beginning Each Step. 
 So you run your service local. This is very python developer/specific 
 
-```git clone https://github.com/hughbrien/frontend ```
+```git clone https://github.com/hughbrien/simple-router ```
 
 Make changes to the app.py, Dockerfile, README.md 
 
 
-```kubectl apply -f frontend.yaml```
+```kubectl apply -f simple-router.yaml```
 
 ### Dealing with secrets 
 
@@ -88,11 +88,11 @@ S!B\*d$zDsb=
 
 ### Create ArgoCD Entry 
 
-argocd app create frontend  --repo `git config --get remote.origin.url` --path manifests --dest-server https://kubernetes.default.svc --dest-namespace frontend
+argocd app create simple-router  --repo `git config --get remote.origin.url` --path manifests --dest-server https://kubernetes.default.svc --dest-namespace simple-router
 
 ### Port Forward for Service
-kubectl port-forward -n frontend  service/frontend 5000:5000
+kubectl port-forward -n simple-router  service/simple-router 5000:5000
 
-kubectl port-forward -n frontend  service/frontend 5000:5000
+kubectl port-forward -n simple-router  service/simple-router 5000:5000
 
 
