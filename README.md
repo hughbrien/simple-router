@@ -24,6 +24,10 @@ cd simple-roueter
 ```
 export VERSION=X.X.X
 docker buildx build --platform linux/amd64,linux/arm64 --push -t hughbrien/simple-router:X.X.X .
+
+export VERSION=1.0.0
+docker buildx build  --push -t  hugenet.jfrog.io/docker/hello-world:latest:${VERSION} .
+
 ```
 
 ## Deployment
