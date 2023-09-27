@@ -13,6 +13,14 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v3
+    - name: Checkout code
+      uses: actions/checkout@v3
+    
+    - name: Setup JFrog CLI
+      uses: jfrog/setup-jfrog-cli@v3
+      env:
+        JF_URL: ${{ secrets.JF_URL }}
+        JF_ACCESS_TOKEN: ${{ secrets.JF_ACCESS_TOKEN }}
+        
     - name: Build the Docker image
       run: docker  build . --push --tag hugenet.jfrog.io/docker/hello-world:latest:1.0.0
